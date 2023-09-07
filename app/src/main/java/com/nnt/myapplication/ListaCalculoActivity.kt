@@ -76,7 +76,8 @@ class ListaCalculoActivity : AppCompatActivity() {
                 val resultado = item.resultado
                 val data = simpleDateFormat.format(item.data)
 
-                textView.text = "TMB: $resultado - $data"
+                val tipo = intent?.extras?.getString("tipo") ?: throw IllegalStateException("Tipo não encontrado!")
+                textView.text = "${tipo.uppercase()} $resultado - $data"
             }
         }
 

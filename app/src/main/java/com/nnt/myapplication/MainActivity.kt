@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.nnt.myapplication.databinding.ActivityMainBinding
+import com.nnt.myapplication.model.Calculo
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +33,20 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("imc", imc.toString())
 
             //binding.textViewTeste.text = "peso: $peso\naltura: $altura\nimc: $imc"
+
+            Thread{
+                val app = application as App
+                val dao = app.db.calculoDao()
+
+                dao.inserir(Calculo(tipo = "imc", resultado = imc))
+
+                runOnUiThread{
+                    //Toast.makeText(this@TMBActivity, "Medição salva com sucesso!", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this@MainActivity, ListaCalculoActivity::class.java)
+                    intent.putExtra("tipo", "imc")
+                    startActivity(intent)
+                }
+            }.start()
 
             startActivity(intent)
         }
